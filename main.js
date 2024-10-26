@@ -52,6 +52,7 @@ async function CreateTableWithValue(divHtmlItem, value)
 		if ((item["Numero"].includes(value) == true) ||
 			(item["CodeBarre"].includes(value) == true) ||
 			(item["Infos"].includes(value) == true) ||
+			(item["Infos"].toUpperCase().includes(value.toUpperCase()) == true) ||
 			(item["NomComplet"].includes(value) == true) ||
 			(item["NomComplet"].toUpperCase().includes(value.toUpperCase()) == true))
 		{
