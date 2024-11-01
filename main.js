@@ -31,6 +31,8 @@ async function CreateTableWithValue(divHtmlItem, value)
 	// Empty starting table
 	let str = '<br><table border="1" width="100%"><tbody>';
 
+	// <input type=text list=browsers><datalist id=browsers><option>Google<option>IE9</datalist>
+
 	// Add it to the list
 	str += '<tr style="background-color:skyblue;">';
 	str += '<td><b><font color="#000000">Numéro</b></td>';
