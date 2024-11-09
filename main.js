@@ -113,9 +113,16 @@ async function CreateTableWithValue(divHtmlItem, inputPopInfoValue, selectTypeSe
 		}
 
 		// Computation Estimation
-		if (item["Estimation"] != 'XXXXXX') totalEstimation += (parseFloat(item["Estimation"] * 100) / 100);
+		if (item["Estimation"] != 'XXXXXX')
+		{
+			// If it's not a searched Pop
+			if (item["Infos"] != 'REC')
+			{
+				totalEstimation += (parseFloat(item["Estimation"] * 100) / 100);
+			}
+		}
 	}
-
+	
 	// Add it to the list
 	//str += '<tr>';
 	//str += '<td><img src="/ViteProject/images/60100.webp" width="32" height="32" /></td>';
