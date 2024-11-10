@@ -5,23 +5,22 @@
 		<link rel="icon" type="image/svg+xml" href="/MyPopList/vite.svg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>My Pop List</title>
-		<script type="module" crossorigin src="/MyPopList/assets/index-B0LmuDEA.js"></script>
+		<script type="module" crossorigin src="/MyPopList/assets/index-DjkkKa2K.js"></script>
 		<link rel="stylesheet" crossorigin href="/MyPopList/assets/index-DRNMkqs8.css">
 	</head>
 	<body>
 		<div id="app">
 			<h1 id="numberOfPops">Liste des Pops</h1>
 			<p>Veuillez saisir la Pop que vous rechercher (Recherche dans le Numero, le Code Barre ou le Nom) : </p>
-			<select id="selectTypeSearch">
-				<option id='selectTypeSearchALL' value="ALL">Toutes les Pops</option>
-				<option id='selectTypeSearchELL' value="ELL">Pops Présentées</option>
-				<option id='selectTypeSearchCMD' value="CMD">Pops Commandées</option>
-				<option id='selectTypeSearchREC' value="REC">Pops Recherchées</option>
-				<option id='selectTypeSearchABM' value="ABM">Pops Abimées</option>
-				<option id='selectTypeSearchMAS' value="MAS">Pops Masculines</option>
-			</select>
-			<input type="text" id="inputPopInfo" required minlength="0" maxlength="50" size="100" label="Test" autocomplete="off" />
-			<div id="divall"></div>
+			<p>(Verifier la 423)</p>
+			<table>
+				<tr>
+					<td align="right"><div id="divTypeSearchResult"></div></td>
+					<td align="left"><div id="divLicenseResult"></div></td>
+					<td align="left"><input type="text" id="inputPopInfo" required minlength="0" maxlength="50" size="100" label="Test" autocomplete="off" /></td>
+				</tr>
+			</table>	
+			<div id="divTableReult"></div>
 			<h1 id="versionOfPops">Version 0.0.0</h1>
 		</div>
 	</body>
