@@ -44,12 +44,12 @@ async function CreateSelectTypeSearch()
 	let str = '<select id="selectTypeSearch">';
 
 	// TypeSearch Options with Ids
-	str += '<option id="selectTypeSearchALL" value="ALL">Toutes les Pops</option>';
 	str += '<option id="selectTypeSearchELL" value="ELL">Pops Présentées</option>';
 	str += '<option id="selectTypeSearchCMD" value="CMD">Pops Commandées</option>';
 	str += '<option id="selectTypeSearchREC" value="REC">Pops Recherchées</option>';
 	str += '<option id="selectTypeSearchABM" value="ABM">Pops Abimées</option>';
 	str += '<option id="selectTypeSearchMAS" value="HOM">Pops Masculines</option>';
+	str += '<option id="selectTypeSearchALL" value="ALL">Toutes les Pops</option>';
 
 	// Ending the HTML section Select
 	str += '</select>';
@@ -210,12 +210,12 @@ async function CreateTableResults(inputPopInfoValue, selectTypeSearchValue, sele
 	document.getElementById('divTableReult').innerHTML = str;
 
 	// Update the Select Options
-	document.getElementById("selectTypeSearchALL").text = 'Toutes les Pops (' + numberOfPopALL + ')';
 	document.getElementById("selectTypeSearchELL").text = 'Pops Possédées (' + (numberOfPopALL-numberOfPopREC-numberOfPopCMD) + ')';
 	document.getElementById("selectTypeSearchCMD").text = 'Pops Commandées (' + numberOfPopCMD + ')';
 	document.getElementById("selectTypeSearchREC").text = 'Pops Recherchées (' + numberOfPopREC + ')';
 	document.getElementById("selectTypeSearchABM").text = 'Pops Abimées (' + numberOfPopABM + ')';
 	document.getElementById("selectTypeSearchMAS").text = 'Pops Masculines (' + numberOfPopMAS + ')';
+	document.getElementById("selectTypeSearchALL").text = 'Toutes les Pops (' + numberOfPopALL + ')';
 
 	// Console Estimation Infos
 	console.log('Estimation Totale = ' + totalEstimation + ' Euros');
