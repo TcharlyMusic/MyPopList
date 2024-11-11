@@ -44,7 +44,7 @@ async function CreateSelectTypeSearch()
 	let str = '<select id="selectTypeSearch">';
 
 	// TypeSearch Options with Ids
-	str += '<option id="selectTypeSearchELL" value="ELL">Pops Présentées</option>';
+	str += '<option id="selectTypeSearchELL" value="ELL">Pops Possédées</option>';
 	str += '<option id="selectTypeSearchCMD" value="CMD">Pops Commandées</option>';
 	str += '<option id="selectTypeSearchREC" value="REC">Pops Recherchées</option>';
 	str += '<option id="selectTypeSearchABM" value="ABM">Pops Abimées</option>';
@@ -250,7 +250,7 @@ async function main()
 	document.getElementById('inputPopInfo').addEventListener("keyup", FullRefresh);
 
 	// Create the Table result control
-	await CreateTableResults('', 'ALL', 'ALL');
+	await CreateTableResults('', 'ELL', 'ALL');
 
 	// Focus on the Input
 	document.getElementById('inputPopInfo').focus();
