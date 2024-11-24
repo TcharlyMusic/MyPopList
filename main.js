@@ -22,6 +22,7 @@ function GetRowColor(item)
 	if (item["Infos"] == 'CMD')		return '<tr style="background-color:skyblue;">';
 	if (item["Infos"] == 'REC')		return '<tr style="background-color:red;">';
 	if (item["Infos"] == 'ABM')		return '<tr style="background-color:gray;">';
+	if (item["Infos"] == 'LUC')		return '<tr style="background-color:brown;">';
 	if (item["Genre"] == 'H')		return '<tr style="background-color:green;">';
 	return '<tr>';
 }
@@ -56,6 +57,7 @@ async function CreateSelectTypeSearch()
 	str += '<option id="selectTypeSearchREC" value="REC">Pops Recherchées</option>';
 	str += '<option id="selectTypeSearchABM" value="ABM">Pops Abimées</option>';
 	str += '<option id="selectTypeSearchMAS" value="HOM">Pops Masculines</option>';
+	str += '<option id="selectTypeSearchLUC" value="LUC">Pops chez Lucile</option>';
 	str += '<option id="selectTypeSearchALL" value="ALL">Toutes les Pops</option>';
 
 	// Ending the HTML section Select
@@ -126,6 +128,7 @@ async function CreateSelectZones()
 	str += '<option value="SA5">SA5</option>';
 	str += '<option value="SA6">SA6</option>';
 	str += '<option value="SA7">SA7</option>';
+
 	str += '<option value="SB1">SB1</option>';
 	str += '<option value="SB2">SB2</option>';
 	str += '<option value="SB3">SB3</option>';
@@ -133,6 +136,7 @@ async function CreateSelectZones()
 	str += '<option value="SB5">SB5</option>';
 	str += '<option value="SB6">SB6</option>';
 	str += '<option value="SB7">SB7</option>';
+
 	str += '<option value="SC1">SC1</option>';
 	str += '<option value="SC2">SC2</option>';
 	str += '<option value="SC3">SC3</option>';
@@ -140,6 +144,7 @@ async function CreateSelectZones()
 	str += '<option value="SC5">SC5</option>';
 	str += '<option value="SC6">SC6</option>';
 	str += '<option value="SC7">SC7</option>';
+
 	str += '<option value="SD1">SD1</option>';
 	str += '<option value="SD2">SD2</option>';
 	str += '<option value="SD3">SD3</option>';
@@ -147,6 +152,38 @@ async function CreateSelectZones()
 	str += '<option value="SD5">SD5</option>';
 	str += '<option value="SD6">SD6</option>';
 	str += '<option value="SD7">SD7</option>';
+
+	str += '<option value="SE1">SE1</option>';
+	str += '<option value="SE2">SE2</option>';
+	str += '<option value="SE3">SE3</option>';
+	str += '<option value="SE4">SE4</option>';
+	str += '<option value="SE5">SE5</option>';
+	str += '<option value="SE6">SE6</option>';
+	str += '<option value="SE7">SE7</option>';
+
+	str += '<option value="SF1">SF1</option>';
+	str += '<option value="SF2">SF2</option>';
+	str += '<option value="SF3">SF3</option>';
+	str += '<option value="SF4">SF4</option>';
+	str += '<option value="SF5">SF5</option>';
+	str += '<option value="SF6">SF6</option>';
+	str += '<option value="SF7">SF7</option>';
+
+	str += '<option value="SG1">SG1</option>';
+	str += '<option value="SG2">SG2</option>';
+	str += '<option value="SG3">SG3</option>';
+	str += '<option value="SG4">SG4</option>';
+	str += '<option value="SG5">SG5</option>';
+	str += '<option value="SG6">SG6</option>';
+	str += '<option value="SG7">SG7</option>';
+
+	str += '<option value="SH1">SH1</option>';
+	str += '<option value="SH2">SH2</option>';
+	str += '<option value="SH3">SH3</option>';
+	str += '<option value="SH4">SH4</option>';
+	str += '<option value="SH5">SH5</option>';
+	str += '<option value="SH6">SH6</option>';
+	str += '<option value="SH7">SH7</option>';
 
 	// Ending the HTML section Select
 	str += '</select>';
@@ -165,6 +202,7 @@ async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, sel
 	let numberOfPopCMD = 0;
 	let numberOfPopREC = 0;
 	let numberOfPopABM = 0;
+	let numberOfPopLUC = 0;
 	let numberOfPopMAS = 0;
 
 	// Loading Pop File
@@ -199,13 +237,14 @@ async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, sel
 		if (item["Infos"] == 'CMD') numberOfPopCMD++;
 		if (item["Infos"] == 'REC') numberOfPopREC++;
 		if (item["Infos"] == 'ABM') numberOfPopABM++;
+		if (item["Infos"] == 'LUC') numberOfPopLUC++;
 		if (item["Genre"] == 'H') numberOfPopMAS++;
 
 		// Depends of the Select ?
 		if
 		(
 			('ALL' == selectTypeSearchValue) || 
-			(('ELL' == selectTypeSearchValue) && ((item["Infos"] == '') || (item["Infos"] == 'ABM'))) || 
+			(('ELL' == selectTypeSearchValue) && ((item["Infos"] == '') || (item["Infos"] == 'ABM') || (item["Infos"] == 'LUC'))) || 
 			(('HOM' == selectTypeSearchValue) && (item["Genre"] == 'H')) || 
 			(item["Infos"] == selectTypeSearchValue)
 		)
@@ -261,6 +300,7 @@ async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, sel
 	document.getElementById("selectTypeSearchREC").text = 'Pops Recherchées (' + numberOfPopREC + ')';
 	document.getElementById("selectTypeSearchABM").text = 'Pops Abimées (' + numberOfPopABM + ')';
 	document.getElementById("selectTypeSearchMAS").text = 'Pops Masculines (' + numberOfPopMAS + ')';
+	document.getElementById("selectTypeSearchLUC").text = 'Pops chez Lucile (' + numberOfPopLUC + ')';
 	document.getElementById("selectTypeSearchALL").text = 'Toutes les Pops (' + numberOfPopALL + ')';
 
 	// Console Estimation Infos
