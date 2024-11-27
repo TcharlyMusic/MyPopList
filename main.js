@@ -3,7 +3,7 @@ import './style.css'
 function PopData_NotAsync()
 {
 	// Loading Pop Datas
-	let popList = [{ "Numero":"SE",   "CodeBarre":"60100", "Infos":"",   "Estimation":"010.90", "Genre":"F", "TypeDePop":"Pops!",            "NomComplet":"Yara Flor (Future State)" }];
+	let popList = [{ "Num":"SE",   "Id":"60100", "Infos":"",   "Price":"010.90", "Gender":"F", "Type":"Pops!",            "Name":"Yara Flor (Future State)" }];
 	return popList;
 }
 async function PopData_Async()
@@ -23,17 +23,17 @@ function GetRowColor(item)
 	if (item["Infos"] == 'REC')		return '<tr style="background-color:red;">';
 	if (item["Infos"] == 'ABM')		return '<tr style="background-color:gray;">';
 	if (item["Infos"] == 'LUC')		return '<tr style="background-color:olive;">';
-	if (item["Genre"] == 'H')		return '<tr style="background-color:green;">';
+	if (item["Gender"] == 'H')		return '<tr style="background-color:green;">';
 	return '<tr>';
 }
 function IsPopMatch(item, inputPopInfoValue)
 {
-	if ((item["Numero"].includes(inputPopInfoValue) == true) ||
-		(item["CodeBarre"].includes(inputPopInfoValue) == true) ||
+	if ((item["Num"].includes(inputPopInfoValue) == true) ||
+		(item["Id"].includes(inputPopInfoValue) == true) ||
 		(item["Infos"].includes(inputPopInfoValue) == true) ||
 		(item["Infos"].toUpperCase().includes(inputPopInfoValue.toUpperCase()) == true) ||
-		(item["NomComplet"].includes(inputPopInfoValue) == true) ||
-		(item["NomComplet"].toUpperCase().includes(inputPopInfoValue.toUpperCase()) == true))
+		(item["Name"].includes(inputPopInfoValue) == true) ||
+		(item["Name"].toUpperCase().includes(inputPopInfoValue.toUpperCase()) == true))
 		return true;
 	return false;
 }
@@ -191,10 +191,10 @@ async function CreateSelectZones()
 	// Send the Generated Select to the HTML of the DIV
 	document.getElementById('divZoneResult').innerHTML = str;
 }
-async function CreateSelectTypePops()
+async function CreateSelectType()
 {
-	// Empty list of TypePops
-	let typePopsList = new Array();
+	// Empty list of Type
+	let typeList = new Array();
 
 	// Get the Pop List
 	let popDatas = await PopData_Async();
@@ -205,44 +205,44 @@ async function CreateSelectTypePops()
 		// Get a Item
 		let item = popDatas[i];
 
-		// If the TypePops exist
-		if (item["TypeDePop"] != '')
+		// If the Type of Pops exist
+		if (item["Type"] != '')
 		{
-			// If the TypePops is not in the List
-			if (ObjectAlreadyInList(typePopsList, item["TypeDePop"]) == false)
+			// If the Type is not in the List
+			if (ObjectAlreadyInList(typeList, item["Type"]) == false)
 			{
 				// Add it
-				typePopsList.push(item["TypeDePop"]);
+				typeList.push(item["Type"]);
 			}				
 		}
 	}
 	
 	// Ordering by alphabetic
-	typePopsList.sort();
+	typeList.sort();
 	
 	// Starting the HTML section Select
-	let str = '<select id="selectTypePops" style="height: 40px; font-size: 16px;">';
+	let str = '<select id="selectType" style="height: 40px; font-size: 16px;">';
 
 	// 1st Option : ALL
 	str += '<option value="ALL">Tous les Types</option>';
 
-	// Loop on all the TypePops found
-	for (let i = 0; i < typePopsList.length; i++)
+	// Loop on all the Type found
+	for (let i = 0; i < typeList.length; i++)
 	{
 		// Generate the License Select
-		str += '<option value="' + typePopsList[i] + '">' + typePopsList[i] + '</option>';
+		str += '<option value="' + typeList[i] + '">' + typeList[i] + '</option>';
 	}
 	
 	// Ending the HTML section Select
 	str += '</select>';
 
 	// Send the Generated Select to the HTML of the DIV
-	document.getElementById('divTypePopsResult').innerHTML = str;
+	document.getElementById('divTypeResult').innerHTML = str;
 }
 
-async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, selectZoneValue, selectTypePopsValue, inputPopInfoValue)
+async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, selectZoneValue, selectTypeValue, inputPopInfoValue)
 {
-	console.log('CreateTableResults(TypeSearch=' + selectTypeSearchValue + ', License=' + selectLicenseValue + ', Zone=' + selectZoneValue + ', Type=' + selectTypePopsValue + ', inputPopInfoValue=' + inputPopInfoValue + ')');
+	console.log('CreateTableResults(TypeSearch=' + selectTypeSearchValue + ', License=' + selectLicenseValue + ', Zone=' + selectZoneValue + ', Type=' + selectTypeValue + ', inputPopInfoValue=' + inputPopInfoValue + ')');
 
 	// Init
 	let totalEstimation = 0.0;
@@ -262,16 +262,16 @@ async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, sel
 
 	// Add it to the list
 	str += '<tr style="background-color:skyblue;">';
-	str += '<td><b><font color="#000000">Numéro</b></td>';
-	str += '<td><b><font color="#000000">Code Barre</b></td>';
+	str += '<td><b><font color="#000000">Num.</b></td>';
+	str += '<td><b><font color="#000000">Code</b></td>';
 	str += '<td><b><font color="#000000">Zones</b></td>';
 	str += '<td><b><font color="#000000">Infos</b></td>';
-	str += '<td><b><font color="#000000">Estimation</b></td>';
+	str += '<td><b><font color="#000000">Prix</b></td>';
 	str += '<td><b><font color="#000000">Etat</b></td>';
 	str += '<td><b><font color="#000000">Genre</b></td>';
-	str += '<td><b><font color="#000000">Type de Pop</b></td>';
+	str += '<td><b><font color="#000000">Type</b></td>';
 	str += '<td><b><font color="#000000">License</b></td>';
-	str += '<td><b><font color="#000000">Nom complet</b></td>';
+	str += '<td><b><font color="#000000">Nom</b></td>';
 	str += '</tr>';
 
 	// loop on all the item of the Pop List
@@ -286,14 +286,14 @@ async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, sel
 		if (item["Infos"] == 'REC') numberOfPopREC++;
 		if (item["Infos"] == 'ABM') numberOfPopABM++;
 		if (item["Infos"] == 'LUC') numberOfPopLUC++;
-		if (item["Genre"] == 'H') numberOfPopMAS++;
+		if (item["Gender"] == 'H') numberOfPopMAS++;
 
 		// Depends of the Select ?
 		if
 		(
 			('ALL' == selectTypeSearchValue) || 
 			(('ELL' == selectTypeSearchValue) && ((item["Infos"] == '') || (item["Infos"] == 'ABM') || (item["Infos"] == 'LUC'))) || 
-			(('HOM' == selectTypeSearchValue) && (item["Genre"] == 'H')) || 
+			(('HOM' == selectTypeSearchValue) && (item["Gender"] == 'H')) || 
 			(item["Infos"] == selectTypeSearchValue)
 		)
 		{
@@ -307,22 +307,22 @@ async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, sel
 					if (('ALL' == selectZoneValue) || (item["Zone"] == selectZoneValue))
 					{
 						// Good Type ?
-						if (('ALL' == selectTypePopsValue) || (item["TypeDePop"] == selectTypePopsValue))
+						if (('ALL' == selectTypeValue) || (item["Type"] == selectTypeValue))
 						{
 							// Color of the Row
 							str += GetRowColor(item);
 
 							// Different row Informations
-							str += '<td>' + item["Numero"] + '</td>';
-							str += '<td>' + item["CodeBarre"] + '</td>';
+							str += '<td>' + item["Num"] + '</td>';
+							str += '<td>' + item["Id"] + '</td>';
 							str += '<td>' + item["Zone"] + '</td>';
 							str += '<td>' + item["Infos"] + '</td>';
-							str += '<td>' + item["Estimation"] + '</td>';
-							str += '<td>' + item["Etat"] + '</td>';
-							str += '<td>' + item["Genre"] + '</td>';
-							str += '<td>' + item["TypeDePop"] + '</td>';
+							str += '<td>' + item["Price"] + '</td>';
+							str += '<td>' + item["State"] + '</td>';
+							str += '<td>' + item["Gender"] + '</td>';
+							str += '<td>' + item["Type"] + '</td>';
 							str += '<td>' + item["License"] + '</td>';
-							str += '<td>' + item["NomComplet"] + '</td>';
+							str += '<td>' + item["Name"] + '</td>';
 							str += '</tr>';
 							str += '</tr>';
 						}
@@ -332,7 +332,7 @@ async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, sel
 		}
 
 		// Computation Estimation
-		if (item["Estimation"] != 'XXXXXX') { if (item["Infos"] != 'REC') { totalEstimation += (parseFloat(item["Estimation"] * 100) / 100); }}
+		if (item["Price"] != 'XXXXXX') { if (item["Infos"] != 'REC') { totalEstimation += (parseFloat(item["Price"] * 100) / 100); }}
 	}
 	
 	// Add it to the list
@@ -382,13 +382,13 @@ async function FullRefresh()
 	let selectZoneValue = document.getElementById('selectZone').value;
 
 	// Get the value of the Select Type
-	let selectTypePopsValue = document.getElementById('selectTypePops').value;
+	let selectTypeValue = document.getElementById('selectType').value;
 
 	// Get the value of the Input
 	let inputPopInfoValue = document.getElementById('inputPopInfo').value;
 
 	// Create the table with the infos
-	CreateTableResults(selectTypeSearchValue, selectLicenseValue, selectZoneValue, selectTypePopsValue, inputPopInfoValue);	
+	CreateTableResults(selectTypeSearchValue, selectLicenseValue, selectZoneValue, selectTypeValue, inputPopInfoValue);	
 }
 
 async function FullReset()
@@ -397,7 +397,7 @@ async function FullReset()
 	document.getElementById("selectTypeSearch").value = 'ELL';
 	document.getElementById("selectLicense").value = 'ALL';
 	document.getElementById("selectZone").value = 'ALL';
-	document.getElementById("selectTypePops").value = 'ALL';
+	document.getElementById("selectType").value = 'ALL';
 	document.getElementById("inputPopInfo").value = '';
 
 	// And refresh
@@ -415,15 +415,15 @@ async function main()
 	// Create the Select Zone
 	await CreateSelectZones();
 
-	// Create the Select TypePops
-	await CreateSelectTypePops();
+	// Create the Select Type
+	await CreateSelectType();
 	
 	// Events
 	document.getElementById('buttonReset').addEventListener("click", FullReset);
 	document.getElementById('selectTypeSearch').addEventListener("change", FullRefresh);
 	document.getElementById('selectLicense').addEventListener("change", FullRefresh);
 	document.getElementById('selectZone').addEventListener("change", FullRefresh);
-	document.getElementById('selectTypePops').addEventListener("change", FullRefresh);
+	document.getElementById('selectType').addEventListener("change", FullRefresh);
 	document.getElementById('inputPopInfo').addEventListener("keyup", FullRefresh);
 
 	// Create the Table result control
@@ -433,7 +433,7 @@ async function main()
 	document.getElementById('inputPopInfo').focus();
 
 	// Update the Version Estimation
-	document.getElementById("versionOfPops").innerHTML = 'Version 0.9.4 (2024-11-27)';
+	document.getElementById("versionOfPops").innerHTML = 'Version 0.9.5 (2024-11-27)';
 }
 
 // Main Function
