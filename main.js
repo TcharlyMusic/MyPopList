@@ -3,7 +3,7 @@ import './style.css'
 function PopData_NotAsync()
 {
 	// Loading Pop Datas
-	let popList = [{ "Num":"SE",   "Id":"60100", "Infos":"",   "Price":"010.90", "Gender":"F", "Type":"Pops!",            "Name":"Yara Flor (Future State)" }];
+	let popList = [{ "Num":"SE",   "Id":"60100", "Group":"",   "Price":"010.90", "Gender":"F", "Type":"Pops!",            "Name":"Yara Flor (Future State)" }];
 	return popList;
 }
 async function PopData_Async()
@@ -19,10 +19,10 @@ async function PopData_Async()
 }
 function GetRowColor(item)
 {
-	if (item["Infos"] == 'CMD')		return '<tr style="background-color:skyblue;">';
-	if (item["Infos"] == 'REC')		return '<tr style="background-color:red;">';
-	if (item["Infos"] == 'ABM')		return '<tr style="background-color:gray;">';
-	if (item["Infos"] == 'LUC')		return '<tr style="background-color:olive;">';
+	if (item["Group"] == 'CMD')		return '<tr style="background-color:skyblue;">';
+	if (item["Group"] == 'REC')		return '<tr style="background-color:red;">';
+	if (item["Group"] == 'ABM')		return '<tr style="background-color:gray;">';
+	if (item["Group"] == 'LUC')		return '<tr style="background-color:olive;">';
 	if (item["Gender"] == 'H')		return '<tr style="background-color:green;">';
 	return '<tr>';
 }
@@ -30,8 +30,8 @@ function IsPopMatch(item, inputPopInfoValue)
 {
 	if ((item["Num"].includes(inputPopInfoValue) == true) ||
 		(item["Id"].includes(inputPopInfoValue) == true) ||
-		(item["Infos"].includes(inputPopInfoValue) == true) ||
-		(item["Infos"].toUpperCase().includes(inputPopInfoValue.toUpperCase()) == true) ||
+		(item["Group"].includes(inputPopInfoValue) == true) ||
+		(item["Group"].toUpperCase().includes(inputPopInfoValue.toUpperCase()) == true) ||
 		(item["Name"].includes(inputPopInfoValue) == true) ||
 		(item["Name"].toUpperCase().includes(inputPopInfoValue.toUpperCase()) == true))
 		return true;
@@ -46,25 +46,25 @@ function ObjectAlreadyInList(list, str)
 	return false;
 }
 
-async function CreateSelectTypeSearch()
+async function CreateSelectGroup()
 {
 	// Starting the HTML section Select
-	let str = '<select id="selectTypeSearch" style="height: 40px; font-size: 16px;">';
+	let str = '<select id="selectGroup" style="height: 40px; font-size: 16px;">';
 
-	// TypeSearch Options with Ids
-	str += '<option id="selectTypeSearchELL" value="ELL">Pops Possédées</option>';
-	str += '<option id="selectTypeSearchCMD" value="CMD">Pops Commandées</option>';
-	str += '<option id="selectTypeSearchREC" value="REC">Pops Recherchées</option>';
-	str += '<option id="selectTypeSearchABM" value="ABM">Pops Abimées</option>';
-	str += '<option id="selectTypeSearchMAS" value="HOM">Pops Masculines</option>';
-	str += '<option id="selectTypeSearchLUC" value="LUC">Pops chez Lucile</option>';
-	str += '<option id="selectTypeSearchALL" value="ALL">Toutes les Pops</option>';
+	// Group Options with Ids
+	str += '<option id="selectGroupELL" value="ELL">Pops Possédées</option>';
+	str += '<option id="selectGroupCMD" value="CMD">Pops Commandées</option>';
+	str += '<option id="selectGroupREC" value="REC">Pops Recherchées</option>';
+	str += '<option id="selectGroupABM" value="ABM">Pops Abimées</option>';
+	str += '<option id="selectGroupMAS" value="HOM">Pops Masculines</option>';
+	str += '<option id="selectGroupLUC" value="LUC">Pops chez Lucile</option>';
+	str += '<option id="selectGroupALL" value="ALL">Toutes les Pops</option>';
 
 	// Ending the HTML section Select
 	str += '</select>';
 
 	// Send the Generated Select to the HTML of the DIV
-	document.getElementById('divTypeSearchResult').innerHTML = str;
+	document.getElementById('divGroupResult').innerHTML = str;
 }
 async function CreateSelectLicenses()
 {
@@ -240,9 +240,9 @@ async function CreateSelectType()
 	document.getElementById('divTypeResult').innerHTML = str;
 }
 
-async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, selectZoneValue, selectTypeValue, inputPopInfoValue)
+async function CreateTableResults(selectGroupValue, selectLicenseValue, selectZoneValue, selectTypeValue, inputPopInfoValue)
 {
-	console.log('CreateTableResults(TypeSearch=' + selectTypeSearchValue + ', License=' + selectLicenseValue + ', Zone=' + selectZoneValue + ', Type=' + selectTypeValue + ', inputPopInfoValue=' + inputPopInfoValue + ')');
+	console.log('CreateTableResults(Group=' + selectGroupValue + ', License=' + selectLicenseValue + ', Zone=' + selectZoneValue + ', Type=' + selectTypeValue + ', inputPopInfoValue=' + inputPopInfoValue + ')');
 
 	// Init
 	let totalEstimation = 0.0;
@@ -282,19 +282,19 @@ async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, sel
 
 		// Pop Counting
 		numberOfPopALL++;
-		if (item["Infos"] == 'CMD') numberOfPopCMD++;
-		if (item["Infos"] == 'REC') numberOfPopREC++;
-		if (item["Infos"] == 'ABM') numberOfPopABM++;
-		if (item["Infos"] == 'LUC') numberOfPopLUC++;
+		if (item["Group"] == 'CMD') numberOfPopCMD++;
+		if (item["Group"] == 'REC') numberOfPopREC++;
+		if (item["Group"] == 'ABM') numberOfPopABM++;
+		if (item["Group"] == 'LUC') numberOfPopLUC++;
 		if (item["Gender"] == 'H') numberOfPopMAS++;
 
 		// Depends of the Select ?
 		if
 		(
-			('ALL' == selectTypeSearchValue) || 
-			(('ELL' == selectTypeSearchValue) && ((item["Infos"] == '') || (item["Infos"] == 'ABM') || (item["Infos"] == 'LUC'))) || 
-			(('HOM' == selectTypeSearchValue) && (item["Gender"] == 'H')) || 
-			(item["Infos"] == selectTypeSearchValue)
+			('ALL' == selectGroupValue) || 
+			(('ELL' == selectGroupValue) && ((item["Group"] == '') || (item["Group"] == 'ABM') || (item["Group"] == 'LUC'))) || 
+			(('HOM' == selectGroupValue) && (item["Gender"] == 'H')) || 
+			(item["Group"] == selectGroupValue)
 		)
 		{
 			// Filtering the Value with the Infos
@@ -316,7 +316,7 @@ async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, sel
 							str += '<td>' + item["Num"] + '</td>';
 							str += '<td>' + item["Id"] + '</td>';
 							str += '<td>' + item["Zone"] + '</td>';
-							str += '<td>' + item["Infos"] + '</td>';
+							str += '<td>' + item["Group"] + '</td>';
 							str += '<td>' + item["Price"] + '</td>';
 							str += '<td>' + item["State"] + '</td>';
 							str += '<td>' + item["Gender"] + '</td>';
@@ -332,7 +332,7 @@ async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, sel
 		}
 
 		// Computation Estimation
-		if (item["Price"] != 'XXXXXX') { if (item["Infos"] != 'REC') { totalEstimation += (parseFloat(item["Price"] * 100) / 100); }}
+		if (item["Price"] != 'XXXXXX') { if (item["Group"] != 'REC') { totalEstimation += (parseFloat(item["Price"] * 100) / 100); }}
 	}
 	
 	// Add it to the list
@@ -347,13 +347,13 @@ async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, sel
 	document.getElementById('divTableReult').innerHTML = str;
 
 	// Update the Select Options
-	document.getElementById("selectTypeSearchELL").text = 'Pops Possédées (' + (numberOfPopALL-numberOfPopREC-numberOfPopCMD) + ')';
-	document.getElementById("selectTypeSearchCMD").text = 'Pops Commandées (' + numberOfPopCMD + ')';
-	document.getElementById("selectTypeSearchREC").text = 'Pops Recherchées (' + numberOfPopREC + ')';
-	document.getElementById("selectTypeSearchABM").text = 'Pops Abimées (' + numberOfPopABM + ')';
-	document.getElementById("selectTypeSearchMAS").text = 'Pops Masculines (' + numberOfPopMAS + ')';
-	document.getElementById("selectTypeSearchLUC").text = 'Pops chez Lucile (' + numberOfPopLUC + ')';
-	document.getElementById("selectTypeSearchALL").text = 'Toutes les Pops (' + numberOfPopALL + ')';
+	document.getElementById("selectGroupELL").text = 'Pops Possédées (' + (numberOfPopALL-numberOfPopREC-numberOfPopCMD) + ')';
+	document.getElementById("selectGroupCMD").text = 'Pops Commandées (' + numberOfPopCMD + ')';
+	document.getElementById("selectGroupREC").text = 'Pops Recherchées (' + numberOfPopREC + ')';
+	document.getElementById("selectGroupABM").text = 'Pops Abimées (' + numberOfPopABM + ')';
+	document.getElementById("selectGroupMAS").text = 'Pops Masculines (' + numberOfPopMAS + ')';
+	document.getElementById("selectGroupLUC").text = 'Pops chez Lucile (' + numberOfPopLUC + ')';
+	document.getElementById("selectGroupALL").text = 'Toutes les Pops (' + numberOfPopALL + ')';
 
 	// Console Estimation Infos
 	console.log('Estimation Totale = ' + totalEstimation + ' Euros');
@@ -362,11 +362,11 @@ async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, sel
 async function FullRefresh()
 {
 	// Get the value of the Select Type
-	let selectTypeSearchValue = document.getElementById('selectTypeSearch').value;
+	let selectGroupValue = document.getElementById('selectGroup').value;
 
 	// Repositonning some Values
 	/*
-	if (selectTypeSearchValue == 'CMD')
+	if (selectGroupValue == 'CMD')
 	{
 		let $select = document.querySelector('#selectLicense');
 		let $options = Array.from($select.options);
@@ -388,13 +388,13 @@ async function FullRefresh()
 	let inputPopInfoValue = document.getElementById('inputPopInfo').value;
 
 	// Create the table with the infos
-	CreateTableResults(selectTypeSearchValue, selectLicenseValue, selectZoneValue, selectTypeValue, inputPopInfoValue);	
+	CreateTableResults(selectGroupValue, selectLicenseValue, selectZoneValue, selectTypeValue, inputPopInfoValue);	
 }
 
 async function FullReset()
 {
 	// Repositionning the Selects
-	document.getElementById("selectTypeSearch").value = 'ELL';
+	document.getElementById("selectGroup").value = 'ELL';
 	document.getElementById("selectLicense").value = 'ALL';
 	document.getElementById("selectZone").value = 'ALL';
 	document.getElementById("selectType").value = 'ALL';
@@ -407,7 +407,7 @@ async function FullReset()
 async function main()
 {
 	// Create the Select Type Search
-	await CreateSelectTypeSearch();
+	await CreateSelectGroup();
 	
 	// Create the Select License
 	await CreateSelectLicenses();
@@ -420,7 +420,7 @@ async function main()
 	
 	// Events
 	document.getElementById('buttonReset').addEventListener("click", FullReset);
-	document.getElementById('selectTypeSearch').addEventListener("change", FullRefresh);
+	document.getElementById('selectGroup').addEventListener("change", FullRefresh);
 	document.getElementById('selectLicense').addEventListener("change", FullRefresh);
 	document.getElementById('selectZone').addEventListener("change", FullRefresh);
 	document.getElementById('selectType').addEventListener("change", FullRefresh);
