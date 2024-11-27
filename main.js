@@ -22,7 +22,7 @@ function GetRowColor(item)
 	if (item["Infos"] == 'CMD')		return '<tr style="background-color:skyblue;">';
 	if (item["Infos"] == 'REC')		return '<tr style="background-color:red;">';
 	if (item["Infos"] == 'ABM')		return '<tr style="background-color:gray;">';
-	if (item["Infos"] == 'LUC')		return '<tr style="background-color:brown;">';
+	if (item["Infos"] == 'LUC')		return '<tr style="background-color:olive;">';
 	if (item["Genre"] == 'H')		return '<tr style="background-color:green;">';
 	return '<tr>';
 }
@@ -49,7 +49,7 @@ function ObjectAlreadyInList(list, str)
 async function CreateSelectTypeSearch()
 {
 	// Starting the HTML section Select
-	let str = '<select id="selectTypeSearch">';
+	let str = '<select id="selectTypeSearch" style="height: 40px;">';
 
 	// TypeSearch Options with Ids
 	str += '<option id="selectTypeSearchELL" value="ELL">Pops Possédées</option>';
@@ -96,7 +96,7 @@ async function CreateSelectLicenses()
 	licenseList.sort();
 	
 	// Starting the HTML section Select
-	let str = '<select id="selectLicense">';
+	let str = '<select id="selectLicense" style="height: 40px;">';
 
 	// 1st Option : ALL
 	str += '<option value="ALL">Toutes les Licenses</option>';
@@ -117,7 +117,7 @@ async function CreateSelectLicenses()
 async function CreateSelectZones()
 {
 	// Starting the HTML section Select
-	let str = '<select id="selectZone">';
+	let str = '<select id="selectZone" style="height: 40px;">';
 
 	// Zone Options with Ids
 	str += '<option value="ALL">Toutes les Zones</option>';
@@ -191,10 +191,58 @@ async function CreateSelectZones()
 	// Send the Generated Select to the HTML of the DIV
 	document.getElementById('divZoneResult').innerHTML = str;
 }
-
-async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, selectZoneValue, inputPopInfoValue)
+async function CreateSelectTypePops()
 {
-	console.log('CreateTableResults(TypeSearch=' + selectTypeSearchValue + ', License=' + selectLicenseValue + ', Zone=' + selectZoneValue + ', inputPopInfoValue=' + inputPopInfoValue + ')');
+	// Empty list of TypePops
+	let typePopsList = new Array();
+
+	// Get the Pop List
+	let popDatas = await PopData_Async();
+
+	// Loop on all the item of the Pop List
+	for (let i = 0; i < popDatas.length; i++)
+	{
+		// Get a Item
+		let item = popDatas[i];
+
+		// If the TypePops exist
+		if (item["TypeDePop"] != '')
+		{
+			// If the TypePops is not in the List
+			if (ObjectAlreadyInList(typePopsList, item["TypeDePop"]) == false)
+			{
+				// Add it
+				typePopsList.push(item["TypeDePop"]);
+			}				
+		}
+	}
+	
+	// Ordering by alphabetic
+	typePopsList.sort();
+	
+	// Starting the HTML section Select
+	let str = '<select id="selectTypePops" style="height: 40px;">';
+
+	// 1st Option : ALL
+	str += '<option value="ALL">Tous les Types</option>';
+
+	// Loop on all the TypePops found
+	for (let i = 0; i < typePopsList.length; i++)
+	{
+		// Generate the License Select
+		str += '<option value="' + typePopsList[i] + '">' + typePopsList[i] + '</option>';
+	}
+	
+	// Ending the HTML section Select
+	str += '</select>';
+
+	// Send the Generated Select to the HTML of the DIV
+	document.getElementById('divTypePopsResult').innerHTML = str;
+}
+
+async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, selectZoneValue, selectTypePopsValue, inputPopInfoValue)
+{
+	console.log('CreateTableResults(TypeSearch=' + selectTypeSearchValue + ', License=' + selectLicenseValue + ', Zone=' + selectZoneValue + ', Type=' + selectTypePopsValue + ', inputPopInfoValue=' + inputPopInfoValue + ')');
 
 	// Init
 	let totalEstimation = 0.0;
@@ -258,22 +306,26 @@ async function CreateTableResults(selectTypeSearchValue, selectLicenseValue, sel
 					// Good Zone ?
 					if (('ALL' == selectZoneValue) || (item["Zone"] == selectZoneValue))
 					{
+						// Good Type ?
+						if (('ALL' == selectTypePopsValue) || (item["TypeDePop"] == selectTypePopsValue))
+						{
 							// Color of the Row
-						str += GetRowColor(item);
+							str += GetRowColor(item);
 
-						// Different row Informations
-						str += '<td>' + item["Numero"] + '</td>';
-						str += '<td>' + item["CodeBarre"] + '</td>';
-						str += '<td>' + item["Zone"] + '</td>';
-						str += '<td>' + item["Infos"] + '</td>';
-						str += '<td>' + item["Estimation"] + '</td>';
-						str += '<td>' + item["Etat"] + '</td>';
-						str += '<td>' + item["Genre"] + '</td>';
-						str += '<td>' + item["TypeDePop"] + '</td>';
-						str += '<td>' + item["License"] + '</td>';
-						str += '<td>' + item["NomComplet"] + '</td>';
-						str += '</tr>';
-						str += '</tr>';
+							// Different row Informations
+							str += '<td>' + item["Numero"] + '</td>';
+							str += '<td>' + item["CodeBarre"] + '</td>';
+							str += '<td>' + item["Zone"] + '</td>';
+							str += '<td>' + item["Infos"] + '</td>';
+							str += '<td>' + item["Estimation"] + '</td>';
+							str += '<td>' + item["Etat"] + '</td>';
+							str += '<td>' + item["Genre"] + '</td>';
+							str += '<td>' + item["TypeDePop"] + '</td>';
+							str += '<td>' + item["License"] + '</td>';
+							str += '<td>' + item["NomComplet"] + '</td>';
+							str += '</tr>';
+							str += '</tr>';
+						}
 					}
 				}
 			}
@@ -329,11 +381,27 @@ async function FullRefresh()
 	// Get the value of the Select Zone
 	let selectZoneValue = document.getElementById('selectZone').value;
 
+	// Get the value of the Select Type
+	let selectTypePopsValue = document.getElementById('selectTypePops').value;
+
 	// Get the value of the Input
 	let inputPopInfoValue = document.getElementById('inputPopInfo').value;
 
 	// Create the table with the infos
-	CreateTableResults(selectTypeSearchValue, selectLicenseValue, selectZoneValue, inputPopInfoValue);	
+	CreateTableResults(selectTypeSearchValue, selectLicenseValue, selectZoneValue, selectTypePopsValue, inputPopInfoValue);	
+}
+
+async function FullReset()
+{
+	// Repositionning the Selects
+	document.getElementById("selectTypeSearch").value = 'ELL';
+	document.getElementById("selectLicense").value = 'ALL';
+	document.getElementById("selectZone").value = 'ALL';
+	document.getElementById("selectTypePops").value = 'ALL';
+	document.getElementById("inputPopInfo").value = '';
+
+	// And refresh
+	await CreateTableResults('ELL', 'ALL', 'ALL', 'ALL', '');
 }
 
 async function main()
@@ -346,15 +414,20 @@ async function main()
 	
 	// Create the Select Zone
 	await CreateSelectZones();
+
+	// Create the Select TypePops
+	await CreateSelectTypePops();
 	
 	// Events
+	document.getElementById('buttonReset').addEventListener("click", FullReset);
 	document.getElementById('selectTypeSearch').addEventListener("change", FullRefresh);
 	document.getElementById('selectLicense').addEventListener("change", FullRefresh);
 	document.getElementById('selectZone').addEventListener("change", FullRefresh);
+	document.getElementById('selectTypePops').addEventListener("change", FullRefresh);
 	document.getElementById('inputPopInfo').addEventListener("keyup", FullRefresh);
 
 	// Create the Table result control
-	await CreateTableResults('ELL', 'ALL', 'ALL', '');
+	await CreateTableResults('ELL', 'ALL', 'ALL', 'ALL', '');
 
 	// Focus on the Input
 	document.getElementById('inputPopInfo').focus();
