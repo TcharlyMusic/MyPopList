@@ -49,7 +49,7 @@ function ObjectAlreadyInList(list, str)
 async function CreateSelectTypeSearch()
 {
 	// Starting the HTML section Select
-	let str = '<select id="selectTypeSearch" style="height: 40px;">';
+	let str = '<select id="selectTypeSearch" style="height: 40px; font-size: 16px;">';
 
 	// TypeSearch Options with Ids
 	str += '<option id="selectTypeSearchELL" value="ELL">Pops Possédées</option>';
@@ -96,7 +96,7 @@ async function CreateSelectLicenses()
 	licenseList.sort();
 	
 	// Starting the HTML section Select
-	let str = '<select id="selectLicense" style="height: 40px;">';
+	let str = '<select id="selectLicense" style="height: 40px; font-size: 16px;">';
 
 	// 1st Option : ALL
 	str += '<option value="ALL">Toutes les Licenses</option>';
@@ -117,7 +117,7 @@ async function CreateSelectLicenses()
 async function CreateSelectZones()
 {
 	// Starting the HTML section Select
-	let str = '<select id="selectZone" style="height: 40px;">';
+	let str = '<select id="selectZone" style="height: 40px; font-size: 16px;">';
 
 	// Zone Options with Ids
 	str += '<option value="ALL">Toutes les Zones</option>';
@@ -221,7 +221,7 @@ async function CreateSelectTypePops()
 	typePopsList.sort();
 	
 	// Starting the HTML section Select
-	let str = '<select id="selectTypePops" style="height: 40px;">';
+	let str = '<select id="selectTypePops" style="height: 40px; font-size: 16px;">';
 
 	// 1st Option : ALL
 	str += '<option value="ALL">Tous les Types</option>';
@@ -433,7 +433,7 @@ async function main()
 	document.getElementById('inputPopInfo').focus();
 
 	// Update the Version Estimation
-	document.getElementById("versionOfPops").innerHTML = 'Version 0.9.3';
+	document.getElementById("versionOfPops").innerHTML = 'Version 0.9.4 (2024-11-27)';
 }
 
 // Main Function
