@@ -185,6 +185,15 @@ async function CreateSelectZones()
 	str += '<option value="SH6">SH6</option>';
 	str += '<option value="SH7">SH7</option>';
 
+	str += '<option value="BOY">BOY</option>';
+
+	str += '<option value="CA1">CA1</option>';
+	str += '<option value="CA2">CA2</option>';
+	str += '<option value="CA3">CA3</option>';
+	str += '<option value="CA4">CA4</option>';
+
+	str += '<option value="CUI">CUI</option>';
+
 	// Ending the HTML section Select
 	str += '</select>';
 
