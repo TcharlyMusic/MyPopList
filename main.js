@@ -17,16 +17,71 @@ async function PopData_Async()
 	// return the datas
 	return jsonDatas;
 }
-function GetRowColor(item)
+
+function IsPopMatchGroup(item, selectGroupValue)
 {
-	if (item["Group"] == 'CMD')		return '<tr style="background-color:skyblue;">';
-	if (item["Group"] == 'REC')		return '<tr style="background-color:red;">';
-	if (item["Group"] == 'ABM')		return '<tr style="background-color:gray;">';
-	if (item["Group"] == 'LUC')		return '<tr style="background-color:olive;">';
-	if (item["Gender"] == 'H')		return '<tr style="background-color:green;">';
-	return '<tr>';
+	// str += '<option id="selectGroupALL" value="ALL">Toutes les Pops</option>';
+	if (selectGroupValue == 'ALL') return true;
+
+	// str += '<option id="selectGroupLUC" value="LUC">Pops chez Lucile</option>';
+	if ((selectGroupValue == 'LUC') && (item["Group"] == "LUC")) return true;
+
+	// str += '<option id="selectGroupMAS" value="HOM">Pops Masculines</option>';
+	if ((selectGroupValue == 'HOM') && (item["Gender"] == "H")) return true;
+
+	// str += '<option id="selectGroupABM" value="ABM">Pops Abimées</option>';
+	if ((selectGroupValue == 'ABM') && (item["Group"] == "ABM")) return true;
+
+	// str += '<option id="selectGroupREC" value="REC">Pops Recherchées</option>';
+	if ((selectGroupValue == 'REC') && (item["Group"] == "REC")) return true;
+
+	// str += '<option id="selectGroupCMD" value="CMD">Pops Commandées</option>';
+	if ((selectGroupValue == 'CMD') && (item["Group"] == "CMD")) return true;
+
+	// str += '<option id="selectGroupPOS" value="POS">Pops Possédées</option>';
+	if ((selectGroupValue == 'POS') && (
+		(item["Group"] == "TOP") || 
+		(item["Group"] == "ABM") || 
+		(item["Group"] == "LUC")
+	)) return true;
+
+	// Otherwise
+	return false;
 }
-function IsPopMatch(item, inputPopInfoValue)
+function IsPopMatchSelectValue(item, field, selectValue)
+{
+	// Good ?
+	if (('ALL' == selectValue) || (item[" + field + "] == selectValue))	return true;
+
+	// or not ...
+	return false;
+}
+function IsPopMatchLicense(item, selectLicenseValue)
+{
+	// Good License ?
+	if (('ALL' == selectLicenseValue) || (item["License"] == selectLicenseValue))	return true;
+
+	// Otherwise
+	return false;
+}
+function IsPopMatchZone(item, selectZoneValue)
+{
+	// Good Zone ?
+	if (('ALL' == selectZoneValue) || (item["Zone"] == selectZoneValue))	return true;
+
+	// Otherwise
+	return false;
+}
+
+function IsPopMatchType(item, selectTypeValue)
+{
+	// Good Type ?
+	if (('ALL' == selectTypeValue) || (item["Type"] == selectTypeValue))	return true;
+
+	// Otherwise
+	return false;
+}
+function IsPopMatchInput(item, inputPopInfoValue)
 {
 	if ((item["Num"].includes(inputPopInfoValue) == true) ||
 		(item["Id"].includes(inputPopInfoValue) == true) ||
@@ -37,13 +92,31 @@ function IsPopMatch(item, inputPopInfoValue)
 		return true;
 	return false;
 }
-function ObjectAlreadyInList(list, str)
+
+function GetRowColor(item)
+{
+	if (item["Group"] == 'CMD')		return '<tr style="background-color:skyblue;">';
+	if (item["Group"] == 'REC')		return '<tr style="background-color:red;">';
+	if (item["Group"] == 'ABM')		return '<tr style="background-color:gray;">';
+	if (item["Group"] == 'LUC')		return '<tr style="background-color:olive;">';
+	if (item["Gender"] == 'H')		return '<tr style="background-color:green;">';
+	return '<tr>';
+}
+function IsObjectAlreadyInList(list, str)
 {
 	for (let i = 0; i < list.length; i++)
 	{
 		if (list[i] == str) return true;
 	}
 	return false;
+}
+function GetObjectWithFieldAlreadyInList(list, field, str)
+{
+	for (let i = 0; i < list.length; i++)
+	{
+		if (list[i][field] == str) return list[i];
+	}
+	return null;
 }
 
 async function CreateSelectGroup()
@@ -52,7 +125,7 @@ async function CreateSelectGroup()
 	let str = '<select id="selectGroup" style="height: 40px; font-size: 16px;">';
 
 	// Group Options with Ids
-	str += '<option id="selectGroupELL" value="ELL">Pops Possédées</option>';
+	str += '<option id="selectGroupPOS" value="POS">Pops Possédées</option>';
 	str += '<option id="selectGroupCMD" value="CMD">Pops Commandées</option>';
 	str += '<option id="selectGroupREC" value="REC">Pops Recherchées</option>';
 	str += '<option id="selectGroupABM" value="ABM">Pops Abimées</option>';
@@ -84,7 +157,7 @@ async function CreateSelectLicenses()
 		if (item["License"] != '')
 		{
 			// If the License is not in the List
-			if (ObjectAlreadyInList(licenseList, item["License"]) == false)
+			if (IsObjectAlreadyInList(licenseList, item["License"]) == false)
 			{
 				// Add it
 				licenseList.push(item["License"]);
@@ -218,7 +291,7 @@ async function CreateSelectType()
 		if (item["Type"] != '')
 		{
 			// If the Type is not in the List
-			if (ObjectAlreadyInList(typeList, item["Type"]) == false)
+			if (IsObjectAlreadyInList(typeList, item["Type"]) == false)
 			{
 				// Add it
 				typeList.push(item["Type"]);
@@ -249,11 +322,129 @@ async function CreateSelectType()
 	document.getElementById('divTypeResult').innerHTML = str;
 }
 
+async function CheckFullPopTable()
+{
+	// Empty list of Object
+	let objectList = new Array();
+
+	// Loading Pop File
+	let popDatas = await PopData_Async();
+
+	// CHECK 1
+	//
+	// Verify that the Id of the Pops is not multiple times 
+
+	// loop on all the item of the Pop List
+	for (let i = 0; i < popDatas.length; i++)
+	{
+		// Get a Item
+		let item = popDatas[i];
+
+		// If the License exist
+		if (item["Id"] != '')
+		{
+			// If the License is not in the List
+			let itemFound = GetObjectWithFieldAlreadyInList(objectList, 'Id', item["Id"]);
+
+			// Not found ?
+			if (itemFound == null)
+			{
+				// Add it
+				objectList.push(item);
+			}
+			else
+			{
+				// Check the Num of the 2 Objects
+				if (itemFound["Num"] == item["Num"])
+				{
+					// Same Id and same Num => 2 Pops : 1 diamant and the other not
+				}
+				else
+				{
+					// Same Id and different Num
+					console.log('ATTENTION: Id already exist : Id=' + item["Id"] + ' / Num=' + item["Num"]);
+				}
+			}
+		}
+		else
+		{
+			// Found a pop with no Id
+			console.log('ATTENTION: No Id for this Pop : Num=' + item["Num"] + ', Type=' + item["Type"] + ', Name=' + item["Name"]);
+		}
+	}
+
+	// CHECK 2
+	//
+	// Verify the Type Field
+
+	// loop on all the item of the Pop List
+	for (let i = 0; i < popDatas.length; i++)
+	{
+		// Get a Item
+		let item = popDatas[i];
+	
+		// If the License exist
+		if (
+			(item["Group"] != 'ABM') && 
+			(item["Group"] != 'REC') && 
+			(item["Group"] != 'CMD') &&
+			(item["Group"] != 'LUC') &&
+			(item["Group"] != 'TOP'))
+		{
+			console.log('ATTENTION: No Id for this Pop : Num=' + item["Num"] + ', Group=' + item["Group"] + ', Name=' + item["Name"]);
+		}
+	}
+}
+async function FullRefresh()
+{
+	// Get the value of the Select Type
+	let selectGroupValue = document.getElementById('selectGroup').value;
+
+	// Repositonning some Values
+	/*
+	if (selectGroupValue == 'CMD')
+	{
+		let $select = document.querySelector('#selectLicense');
+		let $options = Array.from($select.options);
+		let optionToSelect = $options.find(item => item.value === 'ALL');
+		optionToSelect.selected = true;
+	}
+	*/
+
+	// Get the value of the Select License
+	let selectLicenseValue = document.getElementById('selectLicense').value;
+
+	// Get the value of the Select Zone
+	let selectZoneValue = document.getElementById('selectZone').value;
+
+	// Get the value of the Select Type
+	let selectTypeValue = document.getElementById('selectType').value;
+
+	// Get the value of the Input
+	let inputPopInfoValue = document.getElementById('inputPopInfo').value;
+
+	// Create the table with the infos
+	CreateTableResults(selectGroupValue, selectLicenseValue, selectZoneValue, selectTypeValue, inputPopInfoValue);	
+}
+async function FullReset()
+{
+	// Repositionning the Selects
+	document.getElementById("selectGroup").value = 'TOP';
+	document.getElementById("selectLicense").value = 'ALL';
+	document.getElementById("selectZone").value = 'ALL';
+	document.getElementById("selectType").value = 'ALL';
+	document.getElementById("inputPopInfo").value = '';
+
+	// And refresh
+	await CreateTableResults('POS', 'ALL', 'ALL', 'ALL', '');
+}
+
 async function CreateTableResults(selectGroupValue, selectLicenseValue, selectZoneValue, selectTypeValue, inputPopInfoValue)
 {
 	console.log('CreateTableResults(Group=' + selectGroupValue + ', License=' + selectLicenseValue + ', Zone=' + selectZoneValue + ', Type=' + selectTypeValue + ', inputPopInfoValue=' + inputPopInfoValue + ')');
 
 	// Init
+	let numberOfPopFound = 0;
 	let totalEstimation = 0.0;
 	let numberOfPopALL = 0;
 	let numberOfPopCMD = 0;
@@ -297,26 +488,20 @@ async function CreateTableResults(selectGroupValue, selectLicenseValue, selectZo
 		if (item["Group"] == 'LUC') numberOfPopLUC++;
 		if (item["Gender"] == 'H') numberOfPopMAS++;
 
-		// Depends of the Select ?
-		if
-		(
-			('ALL' == selectGroupValue) || 
-			(('ELL' == selectGroupValue) && ((item["Group"] == '') || (item["Group"] == 'ABM') || (item["Group"] == 'LUC'))) || 
-			(('HOM' == selectGroupValue) && (item["Gender"] == 'H')) || 
-			(item["Group"] == selectGroupValue)
-		)
+		// Good Group ? 
+		if (IsPopMatchGroup(item, selectGroupValue) == true)
 		{
-			// Filtering the Value with the Infos
-			if (IsPopMatch(item, inputPopInfoValue) == true)
+			// Good License ?
+			if (IsPopMatchLicense(item, selectLicenseValue) == true)
 			{
-				// Good License ?
-				if (('ALL' == selectLicenseValue) || (item["License"] == selectLicenseValue))
+				// Good Zone ?
+				if (IsPopMatchZone(item, selectZoneValue) == true)
 				{
-					// Good Zone ?
-					if (('ALL' == selectZoneValue) || (item["Zone"] == selectZoneValue))
+					// Good Type ?
+					if (IsPopMatchType(item, selectTypeValue) == true)
 					{
-						// Good Type ?
-						if (('ALL' == selectTypeValue) || (item["Type"] == selectTypeValue))
+						// Good input ?
+						if (IsPopMatchInput(item, inputPopInfoValue) == true)
 						{
 							// Color of the Row
 							str += GetRowColor(item);
@@ -334,6 +519,9 @@ async function CreateTableResults(selectGroupValue, selectLicenseValue, selectZo
 							str += '<td>' + item["Name"] + '</td>';
 							str += '</tr>';
 							str += '</tr>';
+
+							// One more Found
+							numberOfPopFound++;
 						}
 					}
 				}
@@ -356,7 +544,7 @@ async function CreateTableResults(selectGroupValue, selectLicenseValue, selectZo
 	document.getElementById('divTableReult').innerHTML = str;
 
 	// Update the Select Options
-	document.getElementById("selectGroupELL").text = 'Pops Possédées (' + (numberOfPopALL-numberOfPopREC-numberOfPopCMD) + ')';
+	document.getElementById("selectGroupPOS").text = 'Pops Possédées (' + (numberOfPopALL-numberOfPopREC-numberOfPopCMD) + ')';
 	document.getElementById("selectGroupCMD").text = 'Pops Commandées (' + numberOfPopCMD + ')';
 	document.getElementById("selectGroupREC").text = 'Pops Recherchées (' + numberOfPopREC + ')';
 	document.getElementById("selectGroupABM").text = 'Pops Abimées (' + numberOfPopABM + ')';
@@ -364,53 +552,11 @@ async function CreateTableResults(selectGroupValue, selectLicenseValue, selectZo
 	document.getElementById("selectGroupLUC").text = 'Pops chez Lucile (' + numberOfPopLUC + ')';
 	document.getElementById("selectGroupALL").text = 'Toutes les Pops (' + numberOfPopALL + ')';
 
+	// Update the Number of Pops Found and the Version
+	document.getElementById("versionOfPops").innerHTML = 'Pops found = ' + numberOfPopFound + ' / Version 0.9.5 (2024-11-27)';
+
 	// Console Estimation Infos
 	console.log('Estimation Totale = ' + totalEstimation + ' Euros');
-}
-
-async function FullRefresh()
-{
-	// Get the value of the Select Type
-	let selectGroupValue = document.getElementById('selectGroup').value;
-
-	// Repositonning some Values
-	/*
-	if (selectGroupValue == 'CMD')
-	{
-		let $select = document.querySelector('#selectLicense');
-		let $options = Array.from($select.options);
-		let optionToSelect = $options.find(item => item.value === 'ALL');
-		optionToSelect.selected = true;
-	}
-	*/
-
-	// Get the value of the Select License
-	let selectLicenseValue = document.getElementById('selectLicense').value;
-
-	// Get the value of the Select Zone
-	let selectZoneValue = document.getElementById('selectZone').value;
-
-	// Get the value of the Select Type
-	let selectTypeValue = document.getElementById('selectType').value;
-
-	// Get the value of the Input
-	let inputPopInfoValue = document.getElementById('inputPopInfo').value;
-
-	// Create the table with the infos
-	CreateTableResults(selectGroupValue, selectLicenseValue, selectZoneValue, selectTypeValue, inputPopInfoValue);	
-}
-
-async function FullReset()
-{
-	// Repositionning the Selects
-	document.getElementById("selectGroup").value = 'ELL';
-	document.getElementById("selectLicense").value = 'ALL';
-	document.getElementById("selectZone").value = 'ALL';
-	document.getElementById("selectType").value = 'ALL';
-	document.getElementById("inputPopInfo").value = '';
-
-	// And refresh
-	await CreateTableResults('ELL', 'ALL', 'ALL', 'ALL', '');
 }
 
 async function main()
@@ -427,6 +573,9 @@ async function main()
 	// Create the Select Type
 	await CreateSelectType();
 	
+	// Check
+	await CheckFullPopTable();
+
 	// Events
 	document.getElementById('buttonReset').addEventListener("click", FullReset);
 	document.getElementById('selectGroup').addEventListener("change", FullRefresh);
@@ -436,13 +585,10 @@ async function main()
 	document.getElementById('inputPopInfo').addEventListener("keyup", FullRefresh);
 
 	// Create the Table result control
-	await CreateTableResults('ELL', 'ALL', 'ALL', 'ALL', '');
+	await CreateTableResults('POS', 'ALL', 'ALL', 'ALL', '');
 
 	// Focus on the Input
 	document.getElementById('inputPopInfo').focus();
-
-	// Update the Version Estimation
-	document.getElementById("versionOfPops").innerHTML = 'Version 0.9.5 (2024-11-27)';
 }
 
 // Main Function
