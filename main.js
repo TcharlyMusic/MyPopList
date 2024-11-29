@@ -39,6 +39,7 @@ function IsPopMatchGroup(item, selectGroupValue)
 	if ((selectGroupValue == 'CMD') && (item["Group"] == "CMD")) return true;
 
 	// str += '<option id="selectGroupPOS" value="POS">Pops Possédées</option>';
+	// The Posseded are TOP + ABM + LUC
 	if ((selectGroupValue == 'POS') && (
 		(item["Group"] == "TOP") || 
 		(item["Group"] == "ABM") || 
@@ -72,7 +73,6 @@ function IsPopMatchZone(item, selectZoneValue)
 	// Otherwise
 	return false;
 }
-
 function IsPopMatchType(item, selectTypeValue)
 {
 	// Good Type ?
@@ -265,6 +265,32 @@ async function CreateSelectZones()
 	str += '<option value="CA3">CA3</option>';
 	str += '<option value="CA4">CA4</option>';
 
+	str += '<option value="CB1">CB1</option>';
+	str += '<option value="CB2">CB2</option>';
+	str += '<option value="CB3">CB3</option>';
+	str += '<option value="CB4">CB4</option>';
+
+	str += '<option value="CC1">CC1</option>';
+	str += '<option value="CC2">CC2</option>';
+	str += '<option value="CC3">CC3</option>';
+	str += '<option value="CC4">CC4</option>';
+
+	str += '<option value="CD1">CD1</option>';
+	str += '<option value="CD2">CD2</option>';
+	str += '<option value="CD3">CD3</option>';
+	str += '<option value="CD4">CD4</option>';
+
+	str += '<option value="CE1">CE1</option>';
+	str += '<option value="CE2">CE2</option>';
+	str += '<option value="CE3">CE3</option>';
+	str += '<option value="CE4">CE4</option>';
+
+	str += '<option value="CF1">CF1</option>';
+	str += '<option value="CF2">CF2</option>';
+	str += '<option value="CF3">CF3</option>';
+	str += '<option value="CF4">CF4</option>';
+
+	str += '<option value="FRI">FRI</option>';
 	str += '<option value="CUI">CUI</option>';
 
 	// Ending the HTML section Select
@@ -375,26 +401,43 @@ async function CheckFullPopTable()
 
 	// CHECK 2
 	//
-	// Verify the Type Field
+	// Verify the Group
 
-	// loop on all the item of the Pop List
+	// Loop on all the item of the Pop List
 	for (let i = 0; i < popDatas.length; i++)
 	{
 		// Get a Item
 		let item = popDatas[i];
 	
-		// If the License exist
-		if (
-			(item["Group"] != 'ABM') && 
-			(item["Group"] != 'REC') && 
-			(item["Group"] != 'CMD') &&
-			(item["Group"] != 'LUC') &&
-			(item["Group"] != 'TOP'))
+		// If the Group is not in the list
+		if ((item["Group"] != 'ABM') && (item["Group"] != 'REC') && (item["Group"] != 'CMD') && (item["Group"] != 'LUC') && (item["Group"] != 'TOP'))
 		{
-			console.log('ATTENTION: No Id for this Pop : Num=' + item["Num"] + ', Group=' + item["Group"] + ', Name=' + item["Name"]);
+			console.log('ATTENTION: No Group for this Pop : Num=' + item["Num"] + ', Group=' + item["Group"] + ', Name=' + item["Name"]);
+		}
+	}
+
+	// CHECK 3
+	//
+	// Verify the Zone with the Group
+
+	// Loop on all the item of the Pop List
+	for (let i = 0; i < popDatas.length; i++)
+	{
+		// Get a Item
+		let item = popDatas[i];
+	
+		// If the Zone id empty
+		if (item["Zone"] == '')
+		{
+			// If it's not a Searched Pop, a commander Pop or a Chez Lucile Pop
+			if ((item["Group"] != 'REC') && (item["Group"] != 'CMD') && (item["Group"] != 'LUC'))
+			{
+				console.log('ATTENTION: No Zone for this Pop : Num=' + item["Num"] + ', Group=' + item["Group"] + ', Name=' + item["Name"]);
+			}
 		}
 	}
 }
+
 async function FullRefresh()
 {
 	// Get the value of the Select Type
