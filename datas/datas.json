@@ -495,7 +495,7 @@
 		{ "Num":"0338", "Id":"30107", "Zone":"CB1", "License":"",                                              "Group":"TOP", "Price":"010.00", "State":"",       "Gender":"F", "Type":"Pop! Games",       "Name":"Amanda Holliday"},
 		{ "Num":"0338", "Id":"47707", "Zone":"",    "License":"Batman : Le Défi",                              "Group":"REC", "Price":"018.99", "State":"",       "Gender":"F", "Type":"Pop! Heroes",      "Name":"Catwoman"},
 		{ "Num":"0339", "Id":"21716", "Zone":"SB7", "License":"",                                              "Group":"TOP", "Price":"012.89", "State":"",       "Gender":"F", "Type":"Pop!",             "Name":"Snow White"},
-		{ "Num":"0339", "Id":"30171", "Zone":"BOY", "License":"Destiny",                                       "Group":"TOP", "Price":"012.89", "State":"",       "Gender":"F", "Type":"Pop! Games",       "Name":"Osiris"},
+		{ "Num":"0339", "Id":"30171", "Zone":"BOY", "License":"Destiny",                                       "Group":"TOP", "Price":"012.89", "State":"",       "Gender":"H", "Type":"Pop! Games",       "Name":"Osiris"},
 		{ "Num":"0341", "Id":"66334", "Zone":"",    "License":"",                                              "Group":"REC", "Price":"019.78", "State":"",       "Gender":"F", "Type":"Pop!",             "Name":"Wasp [Black Light]"},
 		{ "Num":"0341", "Id":"30730", "Zone":"",    "License":"",                                              "Group":"REC", "Price":"XXXXXX", "State":"",       "Gender":"F", "Type":"Pop!",             "Name":"Wasp [Chase]"},
 		{ "Num":"0341", "Id":"30730", "Zone":"",    "License":"",                                              "Group":"REC", "Price":"033.63", "State":"",       "Gender":"F", "Type":"Pop!",             "Name":"Wasp"},
