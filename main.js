@@ -596,7 +596,7 @@ async function CreateTableResults(selectGroupValue, selectLicenseValue, selectZo
 	document.getElementById("selectGroupALL").text = 'Toutes les Pops (' + numberOfPopALL + ')';
 
 	// Update the Number of Pops Found and the Version
-	document.getElementById("versionOfPops").innerHTML = 'Pops found = ' + numberOfPopFound + ' / Version 0.9.5 (2024-11-27)';
+	document.getElementById("versionOfPops").innerHTML = 'Pops found = ' + numberOfPopFound + ' / Version 0.9.6 (2024-11-29)';
 
 	// Console Estimation Infos
 	console.log('Estimation Totale = ' + totalEstimation + ' Euros');
