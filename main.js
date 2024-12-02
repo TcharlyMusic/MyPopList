@@ -472,7 +472,7 @@ async function FullRefresh()
 async function FullReset()
 {
 	// Repositionning the Selects
-	document.getElementById("selectGroup").value = 'TOP';
+	document.getElementById("selectGroup").value = 'POS';
 	document.getElementById("selectLicense").value = 'ALL';
 	document.getElementById("selectZone").value = 'ALL';
 	document.getElementById("selectType").value = 'ALL';
