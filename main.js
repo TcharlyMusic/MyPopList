@@ -87,6 +87,8 @@ function IsPopMatchInput(item, inputPopInfoValue)
 		(item["Id"].includes(inputPopInfoValue) == true) ||
 		(item["Group"].includes(inputPopInfoValue) == true) ||
 		(item["Group"].toUpperCase().includes(inputPopInfoValue.toUpperCase()) == true) ||
+		(item["License"].includes(inputPopInfoValue) == true) ||
+		(item["License"].toUpperCase().includes(inputPopInfoValue.toUpperCase()) == true) ||
 		(item["Name"].includes(inputPopInfoValue) == true) ||
 		(item["Name"].toUpperCase().includes(inputPopInfoValue.toUpperCase()) == true))
 		return true;
@@ -596,7 +598,7 @@ async function CreateTableResults(selectGroupValue, selectLicenseValue, selectZo
 	document.getElementById("selectGroupALL").text = 'Toutes les Pops (' + numberOfPopALL + ')';
 
 	// Update the Number of Pops Found and the Version
-	document.getElementById("versionOfPops").innerHTML = 'Pops found = ' + numberOfPopFound + ' / Version 0.9.6 (2024-11-29)';
+	document.getElementById("versionOfPops").innerHTML = 'Pops found = ' + numberOfPopFound + ' / Version 0.9.7 (2024-12-20)';
 
 	// Console Estimation Infos
 	console.log('Estimation Totale = ' + totalEstimation + ' Euros');

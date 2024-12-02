@@ -1130,6 +1130,7 @@
 		{ "Num":"1461", "Id":"72140", "Zone":"SF3", "License":"",                                              "Group":"TOP", "Price":"005.95", "State":"",       "Gender":"F", "Type":"Pop! Television",  "Name":"Robin"},
 		{ "Num":"1452", "Id":"78299", "Zone":"",    "License":"Les Indestructibles [Disney]",                  "Group":"REC", "Price":"069.99", "State":"",       "Gender":"F", "Type":"Pop!",             "Name":"Edna Mode"},
 		{ "Num":"1454", "Id":"72411", "Zone":"SH2", "License":"",                                              "Group":"TOP", "Price":"012.32", "State":"",       "Gender":"F", "Type":"Pop! Movies",      "Name":"Mrs. Cratchit"},
+		{ "Num":"1462", "Id":"74698", "Zone":"",    "License":"L'Exorciste",                                   "Group":"REC", "Price":"024.90", "State":"",       "Gender":"F", "Type":"Pop! Movies",      "Name":"Regan Puking"},
 		{ "Num":"1469", "Id":"80598", "Zone":"",    "License":"L'étrange Noël de M. Jack",                     "Group":"REC", "Price":"013.95", "State":"",       "Gender":"F", "Type":"Pop!",             "Name":"Sally"},
 		{ "Num":"1470", "Id":"72114", "Zone":"CF1", "License":"",                                              "Group":"TOP", "Price":"005.95", "State":"",       "Gender":"F", "Type":"Pop! Animation",   "Name":"Mei Kamino (with Pelops II)"},
 		{ "Num":"1472", "Id":"72107", "Zone":"CF1", "License":"",                                              "Group":"TOP", "Price":"005.95", "State":"",       "Gender":"F", "Type":"Pop! Animation",   "Name":"Onami"},
