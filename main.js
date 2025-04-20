@@ -196,6 +196,7 @@ async function CreateSelectZones()
 
 	// Zone Options with Ids
 	str += '<option value="ALL">Toutes les Zones</option>';
+
 	str += '<option value="SA1">SA1</option>';
 	str += '<option value="SA2">SA2</option>';
 	str += '<option value="SA3">SA3</option>';
@@ -260,40 +261,45 @@ async function CreateSelectZones()
 	str += '<option value="SH6">SH6</option>';
 	str += '<option value="SH7">SH7</option>';
 
-	str += '<option value="BOY">BOY</option>';
-
 	str += '<option value="CA1">CA1</option>';
 	str += '<option value="CA2">CA2</option>';
 	str += '<option value="CA3">CA3</option>';
 	str += '<option value="CA4">CA4</option>';
+	str += '<option value="CA5">CA5</option>';
 
 	str += '<option value="CB1">CB1</option>';
 	str += '<option value="CB2">CB2</option>';
 	str += '<option value="CB3">CB3</option>';
 	str += '<option value="CB4">CB4</option>';
+	str += '<option value="CB5">CB5</option>';
 
 	str += '<option value="CC1">CC1</option>';
 	str += '<option value="CC2">CC2</option>';
 	str += '<option value="CC3">CC3</option>';
 	str += '<option value="CC4">CC4</option>';
+	str += '<option value="CC5">CC5</option>';
 
 	str += '<option value="CD1">CD1</option>';
 	str += '<option value="CD2">CD2</option>';
 	str += '<option value="CD3">CD3</option>';
 	str += '<option value="CD4">CD4</option>';
+	str += '<option value="CD5">CD5</option>';
 
 	str += '<option value="CE1">CE1</option>';
 	str += '<option value="CE2">CE2</option>';
 	str += '<option value="CE3">CE3</option>';
 	str += '<option value="CE4">CE4</option>';
+	str += '<option value="CE5">CE5</option>';
 
 	str += '<option value="CF1">CF1</option>';
 	str += '<option value="CF2">CF2</option>';
 	str += '<option value="CF3">CF3</option>';
 	str += '<option value="CF4">CF4</option>';
+	str += '<option value="CF5">CF5</option>';
 
-	str += '<option value="FRI">FRI</option>';
+	str += '<option value="BOY">BOY</option>';
 	str += '<option value="CUI">CUI</option>';
+	str += '<option value="FRI">FRI</option>';
 
 	// Ending the HTML section Select
 	str += '</select>';
@@ -598,7 +604,7 @@ async function CreateTableResults(selectGroupValue, selectLicenseValue, selectZo
 	document.getElementById("selectGroupALL").text = 'Toutes les Pops (' + numberOfPopALL + ')';
 
 	// Update the Number of Pops Found and the Version
-	document.getElementById("versionOfPops").innerHTML = 'Pops found = ' + numberOfPopFound + ' / Version 0.9.12 (2025-04-20)';
+	document.getElementById("versionOfPops").innerHTML = 'Pops found = ' + numberOfPopFound + ' / Version 0.9.13 (2025-04-20)';
 
 	// Console Estimation Infos
 	console.log('Estimation Totale = ' + totalEstimation + ' Euros');
