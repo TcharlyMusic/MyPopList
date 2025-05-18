@@ -26,6 +26,9 @@ function IsPopMatchGroup(item, selectGroupValue)
 	// str += '<option id="selectGroupLUC" value="LUC">Pops chez Lucile</option>';
 	if ((selectGroupValue == 'LUC') && (item["Group"] == "LUC")) return true;
 
+	// str += '<option id="selectGroupSAR" value="SAR">Pops chez Sarah</option>';
+	if ((selectGroupValue == 'SAR') && (item["Group"] == "SAR")) return true;
+
 	// str += '<option id="selectGroupMAS" value="HOM">Pops Masculines</option>';
 	if ((selectGroupValue == 'HOM') && (item["Gender"] == "H")) return true;
 
@@ -39,11 +42,12 @@ function IsPopMatchGroup(item, selectGroupValue)
 	if ((selectGroupValue == 'CMD') && (item["Group"] == "CMD")) return true;
 
 	// str += '<option id="selectGroupPOS" value="POS">Pops Possédées</option>';
-	// The Posseded are TOP + ABM + LUC
+	// The Posseded are TOP + ABM + LUC + SAR
 	if ((selectGroupValue == 'POS') && (
 		(item["Group"] == "TOP") || 
 		(item["Group"] == "ABM") || 
-		(item["Group"] == "LUC")
+		(item["Group"] == "LUC") ||
+		(item["Group"] == "SAR")
 	)) return true;
 
 	// Otherwise
@@ -101,6 +105,7 @@ function GetRowColor(item)
 	if (item["Group"] == 'REC')		return '<tr style="background-color:red;">';
 	if (item["Group"] == 'ABM')		return '<tr style="background-color:gray;">';
 	if (item["Group"] == 'LUC')		return '<tr style="background-color:olive;">';
+	if (item["Group"] == 'SAR')		return '<tr style="background-color:olive;">';
 	if (item["Gender"] == 'H')		return '<tr style="background-color:green;">';
 	return '<tr>';
 }
@@ -133,6 +138,7 @@ async function CreateSelectGroup()
 	str += '<option id="selectGroupABM" value="ABM">Pops Abimées</option>';
 	str += '<option id="selectGroupMAS" value="HOM">Pops Masculines</option>';
 	str += '<option id="selectGroupLUC" value="LUC">Pops chez Lucile</option>';
+	str += '<option id="selectGroupSAR" value="SAR">Pops chez Sarah</option>';
 	str += '<option id="selectGroupALL" value="ALL">Toutes les Pops</option>';
 
 	// Ending the HTML section Select
@@ -418,7 +424,7 @@ async function CheckFullPopTable()
 		let item = popDatas[i];
 	
 		// If the Group is not in the list
-		if ((item["Group"] != 'ABM') && (item["Group"] != 'REC') && (item["Group"] != 'CMD') && (item["Group"] != 'LUC') && (item["Group"] != 'TOP'))
+		if ((item["Group"] != 'ABM') && (item["Group"] != 'REC') && (item["Group"] != 'CMD') && (item["Group"] != 'LUC') && (item["Group"] != 'SAR') && (item["Group"] != 'TOP'))
 		{
 			console.log('ATTENTION: No Group for this Pop : Num=' + item["Num"] + ', Group=' + item["Group"] + ', Name=' + item["Name"]);
 		}
@@ -437,8 +443,8 @@ async function CheckFullPopTable()
 		// If the Zone id empty
 		if (item["Zone"] == '')
 		{
-			// If it's not a Searched Pop, a commander Pop or a Chez Lucile Pop
-			if ((item["Group"] != 'REC') && (item["Group"] != 'CMD') && (item["Group"] != 'LUC'))
+			// If it's not a Searched Pop, a commander Pop or a Chez Lucile Pop or Cgez Sarah Pop
+			if ((item["Group"] != 'REC') && (item["Group"] != 'CMD') && (item["Group"] != 'LUC') && (item["Group"] != 'SAR'))
 			{
 				console.log('ATTENTION: No Zone for this Pop : Num=' + item["Num"] + ', Group=' + item["Group"] + ', Name=' + item["Name"]);
 			}
@@ -502,6 +508,7 @@ async function CreateTableResults(selectGroupValue, selectLicenseValue, selectZo
 	let numberOfPopREC = 0;
 	let numberOfPopABM = 0;
 	let numberOfPopLUC = 0;
+	let numberOfPopSAR = 0;
 	let numberOfPopMAS = 0;
 
 	// Loading Pop File
@@ -537,6 +544,7 @@ async function CreateTableResults(selectGroupValue, selectLicenseValue, selectZo
 		if (item["Group"] == 'REC') numberOfPopREC++;
 		if (item["Group"] == 'ABM') numberOfPopABM++;
 		if (item["Group"] == 'LUC') numberOfPopLUC++;
+		if (item["Group"] == 'SAR') numberOfPopSAR++;
 		if (item["Gender"] == 'H') numberOfPopMAS++;
 
 		// Good Group ? 
@@ -601,10 +609,11 @@ async function CreateTableResults(selectGroupValue, selectLicenseValue, selectZo
 	document.getElementById("selectGroupABM").text = 'Pops Abimées (' + numberOfPopABM + ')';
 	document.getElementById("selectGroupMAS").text = 'Pops Masculines (' + numberOfPopMAS + ')';
 	document.getElementById("selectGroupLUC").text = 'Pops chez Lucile (' + numberOfPopLUC + ')';
+	document.getElementById("selectGroupSAR").text = 'Pops chez Sarah (' + numberOfPopSAR + ')';
 	document.getElementById("selectGroupALL").text = 'Toutes les Pops (' + numberOfPopALL + ')';
 
 	// Update the Number of Pops Found and the Version
-	document.getElementById("versionOfPops").innerHTML = 'Pops found = ' + numberOfPopFound + ' / Version 0.9.17 (2025-05-15)';
+	document.getElementById("versionOfPops").innerHTML = 'Pops found = ' + numberOfPopFound + ' / Version 0.9.18 (2025-05-18)';
 
 	// Console Estimation Infos
 	console.log('Estimation Totale = ' + totalEstimation + ' Euros');
