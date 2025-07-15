@@ -613,7 +613,7 @@ async function CreateTableResults(selectGroupValue, selectLicenseValue, selectZo
 	document.getElementById("selectGroupALL").text = 'Toutes les Pops (' + numberOfPopALL + ')';
 
 	// Update the Number of Pops Found and the Version
-	document.getElementById("versionOfPops").innerHTML = 'Pops found = ' + numberOfPopFound + ' / Version 0.9.19 (2025-05-29)';
+	document.getElementById("versionOfPops").innerHTML = 'Pops found = ' + numberOfPopFound + ' / Version 0.9.20 (2025-07-16)';
 
 	// Console Estimation Infos
 	console.log('Estimation Totale = ' + totalEstimation + ' Euros');
